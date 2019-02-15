@@ -1,1 +1,1 @@
-rootProject.name = "kotlin-dsl"
+rootProject.name = "kotlin-dsl-kotlin-library"
