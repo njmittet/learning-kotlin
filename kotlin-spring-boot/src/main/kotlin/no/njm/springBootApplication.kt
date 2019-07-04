@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
-open class Application : CommandLineRunner {
+class Application : CommandLineRunner {
 
     companion object : Logging
 
