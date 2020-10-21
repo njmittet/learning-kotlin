@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm") version "1.4.10"
-    // Adds "open" to all Spring-annotated classes.
     kotlin("plugin.spring") version "1.4.10"
     id("org.springframework.boot") version "2.3.4.RELEASE"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
