@@ -11,7 +11,7 @@ class Application : CommandLineRunner {
     companion object : Logging
 
     override fun run(vararg args: String?) {
-        logger.debug("Running")
+        logger.debug("Running.")
     }
 }
 

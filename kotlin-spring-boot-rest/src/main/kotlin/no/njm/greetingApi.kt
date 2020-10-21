@@ -10,7 +10,7 @@ data class Greeting(val id: Long, val content: String)
 @RestController
 class GreetingController {
 
-    val counter = AtomicLong()
+    private val counter = AtomicLong()
 
     // Expression body function.
     @GetMapping("/hello")
