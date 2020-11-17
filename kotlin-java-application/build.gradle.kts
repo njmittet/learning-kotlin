@@ -19,14 +19,10 @@ dependencies {
 
     implementation("org.apache.logging.log4j:log4j-api:$log4jVersion")
     implementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
-    implementation("org.apache.logging.log4j:log4j-api-kotlin:1.0.0")
-    
-    testImplementation(kotlin("test"))
-    testImplementation(kotlin("test-junit5"))
 }
 
 application {
-    mainClass.set("no.njm.HelloWorldKt")
+    mainClass.set("no.njm.Application")
 }
 
 tasks.withType<KotlinCompile> {

@@ -1,8 +1,15 @@
 # kotlin-spring-boot-rest
 
-Minimal [Kotlin](https://kotlinlang.org) [Spring Boot](https://spring.io/projects/spring-boot) REST API. Built with [Gradle](https://gradle.org/), using the [Kotling DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html) in the build.gradle.kt file. Built with Gradle (Kotlin build.gradle).
+A minimal [Kotlin](https://kotlinlang.org) and [Spring Boot](https://spring.io/projects/spring-boot) REST application. Build with [Gradle](https://gradle.org/). Uses the [Kotlin DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html) for the build.gradle.kts file.
 
 Uses log4j2 for logging instead of the logger provided by Spring Boot.
 
+Run the application:
+
+```
+./gradlew bootRun
+```
+
 ## Resources
+
 * [Creating a RESTful Web Service with Kotlin and Spring Boot](https://kotlinlang.org/docs/tutorials/spring-boot-restful.html)

@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
+    application
     kotlin("jvm") version "1.4.10"
-    kotlin("plugin.spring") version "1.4.10"
-    id("org.springframework.boot") version "2.4.0"
-    id("io.spring.dependency-management") version "1.0.10.RELEASE"
+    id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 
 repositories {
@@ -19,20 +19,16 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    implementation("org.springframework.boot:spring-boot-starter-web") {
-        exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
-    }
     implementation("org.apache.logging.log4j:log4j-api:$log4jVersion")
     implementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
     implementation("org.apache.logging.log4j:log4j-api-kotlin:1.0.0")
     
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
-    }
+    testImplementation(kotlin("test"))
+    testImplementation(kotlin("test-junit5"))
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+application {
+    mainClass.set("no.njm.HelloWorldKt")
 }
 
 tasks.withType<KotlinCompile> {
