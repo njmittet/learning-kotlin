@@ -9,8 +9,6 @@ repositories {
     jcenter()
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_11
-
 val log4jVersion = "2.14.0"
 
 dependencies {
@@ -20,9 +18,9 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:$log4jVersion")
     implementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
     implementation("org.apache.logging.log4j:log4j-api-kotlin:1.0.0")
-    
-    testImplementation(kotlin("test"))
-    testImplementation(kotlin("test-junit5"))
+
+    testImplementation(platform("org.junit:junit-bom:5.7.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
 application {
@@ -34,6 +32,10 @@ tasks.withType<KotlinCompile> {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "11"
     }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 tasks.withType<Jar> {
