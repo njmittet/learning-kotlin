@@ -14,13 +14,13 @@ To build an executable Jar, run `./gradle build` with one of the alternative bui
 Create an executable fat-jar file:
 
 ```
-./gradlew -b build-fatjar.gradle.kts
+./gradlew -b buildfiles/uberjar.gradle.kts
 ```
 
-Create an executable fat-jar file using the [Gradle Shadow Plugin](https://imperceptiblethoughts.com/shadow/):
+Create an executable uber-jar file using the [Gradle Shadow Plugin](https://imperceptiblethoughts.com/shadow/):
 
 ```
-./gradlew -b build-shadowjar.gradle.kts
+./gradlew -b buildfiles/shadowjar.gradle.kts
 ```
 
 Execute the Jar:
