@@ -2,14 +2,14 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version "1.6.0"
 }
 
 repositories {
     jcenter()
 }
 
-val log4jVersion = "2.14.0"
+val log4jVersion = "2.16.0"
 
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
