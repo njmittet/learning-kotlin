@@ -3,11 +3,23 @@
 Notes taken while learing [Kotlin](https://kotlinlang.org). Examples taken from [Kotlin by Example](https://play.kotlinlang.org/byExample/) and
 [The Kotlin Documentation](https://kotlinlang.org/docs/home.html).
 
-
-
-
-
 ## Language Features
+
+Package specification is optional: If you don't specify a package in a source file, its content goes to the default package.
+
+```kt
+
+package org.kotlinlang.play
+
+// The main functon may or may not take arguments.
+fun main() {
+    println("Hello, World!")
+}
+
+fun main(args: Array<String>) {
+    println("Hello, World!")
+}
+```
 
 ### This Expression
 
