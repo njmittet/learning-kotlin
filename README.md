@@ -35,9 +35,74 @@ fun main(args: Array<String>) {
 
 ## Functions
 
-### Default Parameters
+### Unit & Nothing
+
+The `Unit` type is used to maintain Void interoperability with Java. By default, Java's `void` is mapped to Unit type in Kotlin:
+
+```kt
+fun printMessage(message: String): Unit
+    println(message)
+}
+```
+
+`Unit` is the return type even if it is omitted:
+
+```kt
+fun printMessage(message: String) {
+    println(message)
+}
+```
+
+`Nothing` is a special type in Kotlin that is used to represent a value that never exists:
+
+```kt
+fun alwaysThrowException(): Nothing {
+    throw IllegalArgumentException()
+}
+```
+
+`Nothing` protects from unwarranted code. When functions returning `Nothing` are invoked, the compiler will not execute beyond the function call and omit a warning:
+
+```kt
+fun invokeANothingOnlyFunction() {
+    alwaysThrowException()
+    // The compiler will warn about unreachable code.
+    anotherFunctionCall()
+}
+```
+
+### Default Values
+
+Functions can have default values:
+
+```kt
+fun printMessageWithDefaultPrefix(message: String, prefix: String = "Info") {
+    println("[$prefix] $message")
+}
+```
 
 ### Named Arguments
+
+Named arguments allows for ignoring a functions parameter order:
+
+```kt
+printMessageWithDefaultPrefix(prefix = "Log", message = "Hello")
+```
+
+### Function Return
+
+An explicit return can be omitted if a function only has a single expression:
+
+```kt
+fun multiply(x: Int, y: Int) = x * y
+
+A function returning a value must have an explicit return if the function body has more than a single expression:
+
+```kt
+fun sum(x: Int, y: Int): Int {
+    return x + y
+}
+```
 
 ### Varargs
 
