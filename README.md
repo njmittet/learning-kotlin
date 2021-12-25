@@ -21,7 +21,51 @@ fun main(args: Array<String>) {
 }
 ```
 
-### This Expression
+### This Expressions
+
+If `this` has no qualifiers, it refers to the innermost scope. To refer to `this` in other scopes, use label qualifiers:
+
+```kt
+class A {
+    inner class B {
+        fun Int.foo() {
+            // A's this
+            val a = this@A
+            // B's this
+            val b = this@B
+            // foo()'s receiver, an Int
+            val c = this 
+
+            val myFunction = lambda@ fun String.() {
+                // myFunction's receiver, a String
+                val d = this 
+            }
+
+            val myLambda = { s: String ->
+                // foo()'s receiver, since enclosing lambda expression doesn't have any receiver
+                val d1 = this
+            }
+        }
+    }
+}            
+```
+
+When calling a member function, `this` can be skipped, unless there exists a non-member function with the same name.
+
+```kt
+fun printLine() { }
+
+class A {
+    fun printLine() { }
+
+    fun invokePrintLine()  { 
+        // Calls outer function
+        printLine()
+        // Calls member function
+        this.printLine()
+    }
+}
+```
 
 ### String Templates
 
@@ -29,7 +73,7 @@ fun main(args: Array<String>) {
 
 ### Smart Casts
 
-### Null Safty
+### Null Safety
 
 ### Variables
 
