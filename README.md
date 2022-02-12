@@ -173,10 +173,33 @@ val length = str?.let {
     processString(it)
     it.length
 }
-
 ```
 
 ### run
+
+Executes a code block and returns the result the last expression. The context object is accessed with the `object reference` `this` which is useful when you want to call the object's methods instead of passing it as an argument. The return values is a `lambda result`. `Run` is an `extension function`:
+
+```kt
+val str: String? = "Hello"
+
+val length = str?.run {
+    if (isEmpty()) {
+        // ...
+    }
+    length
+}
+```
+
+`run` can also be used as a non-extension function, with no receiver object. This allows for executing a block of statements where an expression is required:
+
+```kt
+val email = run {
+    val prefix = "my-email"
+    val domain("mail.com")
+
+    Email(prefix, domain)
+}
+```
 
 ### with
 
