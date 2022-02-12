@@ -135,11 +135,54 @@ fun sum(x: Int, y: Int): Int {
 
 ## Scope Functions
 
-- let
-- run
-- with
-- apply
-- also
+The Kotlin standard library contains several functions whose purpose is to execute a block of code within the context of an object. When such a function is calle on an object with a lambda expression provided, it forms a temporary scope. Within this scope, the object can access without its name. These functions do the same: execute a block of code on an object. The difference is how the object is accessed inside the block and what is the result of the whole expression.
+
+### let
+
+Executes the given block of code and returns the result of its last expression. The object is accessible as a lambda argument (it).
+
+```kt
+val isEmpty = "myString".let {
+    customPrint(it)
+    it.isEmpty()
+}
+```
+
+`let` can also be used to invoke one or more functions on results of a call chains:
+
+```kt
+val numbers = listOf("one", "two", "three", "four", "five")
+numbers.map { it.length }.filter { it > 3 }.let {
+    println(it)
+}
+```
+
+If the code block contains a single function with `it` as an argument, the method reference (::) can be used instead of a lambda function:
+
+```kt
+numbers.map { it.length }.filter { it > 3 }.let(::println)
+```
+
+`let` is often used for executing a code block only with non-null values:
+
+```kt
+val str: String? = "Hello"
+// Uses safe call, so let and its code block will only be executed only for non-null values.
+// Calling processString(it) outside of let would cause a compile error.
+val length = str?.let {
+    processString(it)
+    it.length
+}
+
+```
+
+### run
+
+### with
+
+### apply
+
+### also
 
 ## Stream Operations
 
