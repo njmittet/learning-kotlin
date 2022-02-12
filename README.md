@@ -135,11 +135,11 @@ fun sum(x: Int, y: Int): Int {
 
 ## Scope Functions
 
-The Kotlin standard library contains several functions whose purpose is to execute a block of code within the context of an object. When such a function is calle on an object with a lambda expression provided, it forms a temporary scope. Within this scope, the object can access without its name. These functions do the same: execute a block of code on an object. The difference is how the object is accessed inside the block and what is the result of the whole expression.
+The Kotlin standard library contains several functions whose purpose is to execute a block of code within the context of an object. When such a function is called on an object with a lambda expression provided, it forms a temporary scope. Within this scope, the object can access without its name. These functions do the same: execute a block of code on an object. Choosing the right one for your case can be a bit tricky, but difference between them is how the object is accessed inside the block and what the return value is. Scope functions do not introduce any new technical capabilities, but they can make code readable.
 
 ### let
 
-Executes the given block of code and returns the result of its last expression. The object is accessible as a lambda argument (it).
+Executes a code block and returns the result the last expression. The context object is accessed with the `lambda argument` `it` and the return values is a `lambda result`. `Let` is an `extension function`:
 
 ```kt
 val isEmpty = "myString".let {
@@ -183,6 +183,8 @@ val length = str?.let {
 ### apply
 
 ### also
+
+### Comparison
 
 ## Stream Operations
 
