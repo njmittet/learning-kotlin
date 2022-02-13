@@ -224,6 +224,18 @@ val firstAndLast = with(numbers) {
 
 ### apply
 
+`apply` is an `extension function` that executes a code block and returns the context object itself. The context object is accessed with the `object reference` `this`. The function is handy for initializing objects, which is the common use case.
+
+`apply` can be read as "apply the following assignments to the object”:
+
+```kt
+val person = Person()
+person.apply {
+    name = "Firstname Lastname"
+    age = 30
+}
+```
+
 ### also
 
 ### Comparison
