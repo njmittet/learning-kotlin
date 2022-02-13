@@ -203,6 +203,25 @@ val email = run {
 
 ### with
 
+`with` is a `non-extension` function that can access members of its argument. The context object is passed as an argument  and can be accessed with the `object reference` `this`. The return value is a `lambda result`, but the result can be omitted as `with` is commonly used to call functions on the context object without providing a result.
+
+`with` can be read as "with this object, do ”:
+
+```kt
+val numbers = listOf(1, 2, 3)
+with(numbers) {
+    saveSum(sum())
+}
+```
+
+Another use case for with it calculate values of variables:
+
+```kt
+val firstAndLast = with(numbers) {
+    first() to last()
+}
+```
+
 ### apply
 
 ### also
