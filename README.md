@@ -230,13 +230,24 @@ val firstAndLast = with(numbers) {
 
 ```kt
 val person = Person()
-person.apply {
-    name = "Firstname Lastname"
-    age = 30
-}
+    .apply {
+        name = "Firstname Lastname"
+        age = 30
+    }
 ```
 
 ### also
+
+also works like apply: it executes a given block and returns the object called. Inside the block, the object is referenced by it, so it's easier to pass it as an argument.
+
+`also` is an `extension function` that returns the context object itself. `also` works like `apply`, but the context object is accessed with the `lambda argument` `it`, which makes it easier to pass on as an argument. `also` is handy for embedding additional actions:
+
+```kt
+val person = Person()
+    .also {
+        save(it)
+    }
+```
 
 ### Comparison
 
