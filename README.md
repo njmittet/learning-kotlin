@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
 }
 ```
 
-### This Expressions
+### This-expressions
 
 If `this` has no qualifiers, it refers to the innermost scope. To refer to `this` in other scopes, use label qualifiers:
 
@@ -69,7 +69,96 @@ class A {
 
 ### String Templates
 
+String templates allows inclusion of variable references and expressions into strings.
+
+```kt
+val name = "Name"
+
+// Variable reference
+println("Hello $name")  
+// Expressions enclosed in curly braces
+println("Hello ${name.toUpperCase()}")
+```
+
 ### Destructuring
+
+A `destructuring declaration` creates multiple variables at once by destructuring an object into a number of variables:
+
+```kt
+val (name, age) = person
+```
+
+A destructuring declaration is compiled down to the following code:
+
+```kt
+val name = person.component1()
+val age = person.component2()
+```
+
+Anything can be on the right-hand side of a destructuring declaration, as long as the required number of component functions can be called on it.
+
+Array:
+
+```kt
+val (x, y, z) = arrayOf(5, 10, 15) 
+```
+
+maps, note thte useage of `ifiox` funsion `to` returning the built-in `Pair`
+
+```kt
+val map = mapOf("Alice" to 21, "Bob" to 25)
+for ((name, age) in map) {                                      
+    println("$name is $age years old")          
+}
+
+The built-in `Pair` and `Triple` types support destructuring too, even as return values from functions:
+
+```kt
+// Destructuring a Pair returned from a method
+val (min, max) = findMinMax(listOf(100, 90, 50, 98, 76, 83))
+
+// Destructuring a Tripple. Skipp one or more values by using underscore. Avoids complaints about unused variable from the compiler.
+val (_, lastname, email) = Tripple("Firstname", "Lastname", "firstname@lastname.com")
+```
+
+#### Pair
+
+Represents a generic pair of two values. There is no meaning attached to values in this class, it can be used for any purpose.
+
+Two Pairs are equal if all three components are equal.
+
+```kt
+
+val pair = Pair(1, "x")
+
+// Destructuring
+val (a, b) = Pair(1, "x")
+```
+
+The infix functopn `to` can be used to create a Pair.
+
+```kt
+val pair = 2 to 4
+```
+
+Pair implements the functions `toString()` and `toList()`.
+
+#### Tripple
+
+Represents a generic triad of values. There is no meaning attached to values in this class, it can be used for any purpose.
+
+Two triples are equal if all three components are equal.
+
+Unlike Pair, no `inline infix` function for creating a Tripple exists.
+
+```kt
+val triple = Triple("John", 20, true)
+
+// Destructuring a tripple 
+val (name, age, isMediumMember) = triple
+```
+
+Tripple implements the functions `toString()` and `toList()`.
 
 ### Smart Casts
 
@@ -151,6 +240,16 @@ fun sum(x: Int, y: Int): Int {
 ### Varargs
 
 ### Infix Functions
+
+Using `to` to create a map of `Pairs`.
+
+```kt
+val myMap = map(
+  1 to "one",
+  2 to "two",
+  3 to "three"
+)
+```
 
 ### Function Scope
 
