@@ -15,7 +15,7 @@ class GreetingController {
     // Expression body function.
     @GetMapping("/hello")
     fun hello(@RequestParam(value = "name", defaultValue = "World") name: String) =
-            Greeting(counter.incrementAndGet(), "Hello, $name")
+        Greeting(counter.incrementAndGet(), "Hello, $name")
 
     // Block body functions requires an explicit return type and a "return" statement.
     @GetMapping("/greeting")

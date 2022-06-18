@@ -11,22 +11,26 @@ DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html) for the build.gr
 
 To build an executable Jar, run `./gradle build` with one of the alternative build files:
 
-Create an executable fat-jar file:
+## Uberjar
 
-```
-./gradlew -b buildfiles/uberjar.gradle.kts
-```
+Because of deprecations in Gradle, copy the Gradle build file to the main directory before building and running 
+the application. 
 
-Create an executable uber-jar file using the [Gradle Shadow Plugin](https://imperceptiblethoughts.com/shadow/):
-
-```
-./gradlew -b buildfiles/shadowjar.gradle.kts
-```
-
-Execute the Jar:
-
-```
+```sh
+cp ./buildfiles/uberjar.gradle.kts ./build.gradle.kts
+./gradlew clean build
 java -jar build/libs/kotlin-application.jar
+```
+
+## Shadow
+
+Because of deprecations in Gradle, copy the Gradle build file to the main directory before building and running
+the application.
+
+```sh
+cp ./buildfiles/shadowjar.gradle.kts ./build.gradle.kts
+./gradlew clean build
+./gradlew runShadow
 ```
 
 ## Resources
