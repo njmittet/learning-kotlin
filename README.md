@@ -160,9 +160,36 @@ val (name, age, isMediumMember) = triple
 
 Tripple implements the functions `toString()` and `toList()`.
 
+### Null Safety
+
 ### Smart Casts
 
-### Null Safety
+The Kotlin compiler performs type casts automatically, including casts from nullable types to their non-nullable counterparts and casts from a supertype to a subtype.
+
+```kt
+// Declares a nullable variable.
+val map: Map<String, String>? = buildMyMap()
+
+if (map != null) {
+    // Smart-cast to non-nullable, allowing the call to .size
+    println(map.size)
+}
+
+// Smart-cast inside a condition, becuse of short-circuiting.
+if (map != null && map.isNotEmpty()) {
+    println(map.size)
+}
+
+
+if (map is HashMap) {
+    // Smart-cast to the subtype HashMap.
+    println(map["key-1"])
+}
+
+fun buildMyMap(): Map<String, String>? {
+    return mapOf("key-1" to "value-1")
+}
+```
 
 ### Variables
 
@@ -216,7 +243,7 @@ fun printMessageWithDefaultPrefix(message: String, prefix: String = "Info") {
 
 ### Named Arguments
 
-Named arguments allows for ignoring a functions parameter order:
+Named arguments allows ignoring a functions parameter order:
 
 ```kt
 printMessageWithDefaultPrefix(prefix = "Log", message = "Hello")
