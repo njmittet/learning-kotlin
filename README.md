@@ -216,19 +216,22 @@ fun buildMyMap(): Map<String, String>? {
 
 ## Functions
 
-Kotlin functions are declared using the `fun` keyword:
+Kotlin functions are declared using the `fun` keyword.
+
+A function returning a value must have an explicit return if the function body has more than a single expression:
 
 ```kt
-fun myFunction(x: Int): Int {
-    return x * 2
+fun sum(x: Int, y: Int): Int {
+    val i = 10
+    return (x + y) + 1
 }
 ```
 
-The above funciton can be shortened to:
+An explicit return can be omitted if a function only has a single expression:
 
 ```kt
-fun myFunction(x: Int) =  x * 2
-```
+fun multiply(x: Int, y: Int) = x * y
+
 
 ### Unit & Nothing
 
@@ -284,22 +287,30 @@ Named arguments allows ignoring a functions parameter order:
 printMessageWithDefaultPrefix(prefix = "Log", message = "Hello")
 ```
 
-### Function Return
+### Varargs
 
-An explicit return can be omitted if a function only has a single expression:
+Varargs allow you to pass any number of arguments to a funviton by separating them with commas:
+
+val myMap = mapOf(
+    "key-1" to "value-1",
+    "key-1" to "value-1",
+    "key-1" to "value-1"
+)
+
+A function accepting varargs uses the `vararg` keyword:
 
 ```kt
-fun multiply(x: Int, y: Int) = x * y
-
-A function returning a value must have an explicit return if the function body has more than a single expression:
-
-```kt
-fun sum(x: Int, y: Int): Int {
-    return x + y
+fun printAll(vararg messages: String) {
+    messages.forEach { message -> println(message) }
 }
 ```
 
-### Varargs
+Using the spread operator to expand an array to varargs arguments:
+
+```kt
+val entries = arrayOf("En", "To", "Tre")
+printAll(*entries)
+```
 
 ### Infix Functions
 
