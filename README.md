@@ -162,6 +162,29 @@ Tripple implements the functions `toString()` and `toList()`.
 
 ### Null Safety
 
+Variable types in Kotlin don't allow the assignment of `null`. If one needs a variable that can be null, it must be declared with an `?` at the end of its type. 
+The same goes for return values from functions.
+
+```kt
+var neverNull: String = "Can never be null"
+
+var nullable: String? = null
+
+fun myFunction(input: String): String {
+    // Neither the the input variable or the return value are nullable.
+}
+
+fun myFunction(input: String?): String {
+    // The input variable is nullable but the function never returns null.
+}
+
+fun myFunction(input: String?): String? {
+    // Both the input variable and the return value are nullable.
+}
+```
+
+### Variables
+
 ### Smart Casts
 
 The Kotlin compiler performs type casts automatically, including casts from nullable types to their non-nullable counterparts and casts from a supertype to a subtype.
