@@ -214,9 +214,21 @@ fun buildMyMap(): Map<String, String>? {
 }
 ```
 
-### Variables
-
 ## Functions
+
+Kotlin functions are declared using the `fun` keyword:
+
+```kt
+fun myFunction(x: Int): Int {
+    return x * 2
+}
+```
+
+The above funciton can be shortened to:
+
+```kt
+fun myFunction(x: Int) =  x * 2
+```
 
 ### Unit & Nothing
 
