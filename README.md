@@ -314,6 +314,15 @@ printAll(*entries)
 
 ### Infix Functions
 
+Functions marked with the `infix` keyword can be called while omitting the dot and the parentheses normally used, but they:
+
+1. Must be member function or extension functions.
+2. Have a single parameter only.
+3. Can not be a `varargs` function.
+4. Must not have default values.
+
+Also, infix functions always require both the receiver and the parameter to be specified.
+
 Using `to` to create a map of `Pairs`.
 
 ```kt
@@ -322,6 +331,37 @@ val myMap = map(
   2 to "two",
   3 to "three"
 )
+```
+
+Defining an extension function as an infix function:
+
+```kt
+infix fun Int.plus(x: Int): Int {
+
+}
+
+val four = 2 plus 2
+```
+
+Defining amember function as an infix function:
+
+```kt
+class Rules {
+    private val rules = mutableListOf<String>()
+
+    infix fun add(string: String) {
+        rules.add(string)
+    }
+
+    fun build() {
+        this add "abc"
+        add("abc")
+    }
+}
+
+val rules = Rules()
+rules.build()
+rules add "Rule"
 ```
 
 ### Function Scope
