@@ -394,8 +394,36 @@ rules add "Rule"
 
 ### Function Scope
 
-- Local Functions
-- Member Functions
+Kotlin functions can be declared at the top level in a file. In addition, functions can also be declared locally as member functions and extension functions. Kotlin also supports local functions, which are functions inside other functions:
+
+A local function can access local variables of outer functions (the closure);
+
+```kt
+fun login(firstValue: String, secondValue: String) {
+    var errorMessages = emptyList()
+    fun validate(value: String){
+        // ...
+    }
+    validate(firstValue)
+    validate(secondValue)
+}
+```
+
+A member function is a function that is defined inside a class or object:
+
+```kt
+class MyClass {
+
+    fun foo() { 
+        // ...
+    }
+}
+
+// Functions are called with `.dot` notation.
+Sample().foo()
+```
+
+## Extension Functions
 
 ### Generic Functions
 
@@ -406,8 +434,6 @@ rules add "Rule"
 ## Higher Order Functions
 
 ## Lambda Functions
-
-## Extension Functions
 
 ### Extension Properties
 
@@ -536,6 +562,8 @@ val person = Person()
 ## Interfaces
 
 ## Classes
+
+### Generics
 
 ### Accessors
 
