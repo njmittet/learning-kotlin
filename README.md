@@ -162,7 +162,7 @@ Tripple implements the functions `toString()` and `toList()`.
 
 ### Null Safety
 
-Variable types in Kotlin don't allow the assignment of `null`. If one needs a variable that can be null, it must be declared with an `?` at the end of its type. 
+Variable types in Kotlin don't allow the assignment of `null`. If one needs a variable that can be null, it must be declared with an `?` at the end of its type.
 The same goes for return values from functions.
 
 ```kt
@@ -184,6 +184,34 @@ fun myFunction(input: String?): String? {
 ```
 
 ### Variables
+
+Kotlin has type inference, so its usually not necessary to explicitly declare the type of a variable. Use `val` over `var` since immutability is reccomended.
+
+Mutable variables can be declared without being initialized, but the compiler will complain if that variable is tried read before it's initialized. Immutable variables must always be initialized.
+
+```kt
+// Mutable initialized variable with explicit type.
+var a: String = "Value"
+// Imutable initialized variable with explicit type.
+val b: Int = 1
+// Imutable initialized variable, where the type us inferd by the compiler.
+val c = 3
+```
+
+Late initialization of a variable:
+
+```kt
+val value: Int
+
+if (someCondition()) {
+    value = 1
+} else {
+    value = 2
+}
+
+// The variable can be read without the compiler complaining.
+println()
+```
 
 ### Smart Casts
 
@@ -391,7 +419,7 @@ rules add "Rule"
 
 ## Scope Functions
 
-The Kotlin standard library contains several functions whose purpose is to execute a block of code within the context of an object. When such a function is called on an object with a lambda expression provided, it forms a temporary scope. Within this scope, the object can access without its name. These functions do the same: execute a block of code on an object. Choosing the right one for your case can be a bit tricky, but difference between them is how the object is accessed inside the block and what the return value is. Scope functions do not introduce any new technical capabilities, but they can make code readable.
+The Kotlin standard library contains several functions whose purpose is to execute a block of code within the context of an object. When such a function is called on an object with a lambda expression provided, it forms a temporary scope. Within this scope, the object can access without its name. These functions do the same: execute a block of code on an object. Chosing the right one for your case can be a bit tricky, but difference between them is how the object is accessed inside the block and what the return value is. Scope functions do not introduce any new technical capabilities, but they can make code readable.
 
 ### let
 
@@ -505,11 +533,11 @@ val person = Person()
     }
 ```
 
-### Comparison
-
-## Stream Operations
+## Interfaces
 
 ## Classes
+
+### Accessors
 
 ### Inheritance
 
@@ -526,6 +554,10 @@ val person = Person()
 ### Delegation
 
 ## Control Flow
+
+### Comparison
+
+## Stream Operations
 
 ### Jumps
 
