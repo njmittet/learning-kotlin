@@ -423,17 +423,29 @@ class MyClass {
 Sample().foo()
 ```
 
-## Extension Functions
-
 ### Generic Functions
 
-### Tail Recursive Functions
+Functions can be generified if their logic is independent of a specific type.
 
-## Operator Functions (Operator Overloading)
+```kt
+fun <T> singletonList(item: T): List<T> {
+    return listOf(item)
+}
+
+// Letting the compiler infer the generic type when calling the generic function.
+val intList = singletonList(1)
+val stringList = singletonList("String")
+```
+
+## Extension Functions
 
 ## Higher Order Functions
 
 ## Lambda Functions
+
+### Tail Recursive Functions
+
+## Operator Functions (Operator Overloading)
 
 ### Extension Properties
 
