@@ -439,6 +439,33 @@ val stringList = singletonList("String")
 
 ## Extension Functions
 
+Kotlin lets you add new functions to any class. Extension function look a lot like normal functions, but the type they extend must be specified:
+
+```kt
+data class Order(val items: Collection<Item>)
+data class Item(val name: String, val price: Int)
+
+// Creting the extension function.
+fun Order.priceOfMostExpensiveItem() = items.maxByOrNull { it.price }?.price ?: 0
+
+val orderList = Order(
+    listOf(
+        Item("First", 25),
+        Item("Second", 29),
+        Item("Third", 12)
+    )
+)
+val emptyList = Order(emptyList())
+```
+
+It is even possible to add extension functions to null references:
+
+```kt
+fun <T> T?.nullSafeToString() = this?.toString() ?: "NULL"
+```
+
+### Extension Properties
+
 ## Higher Order Functions
 
 ## Lambda Functions
@@ -446,8 +473,6 @@ val stringList = singletonList("String")
 ### Tail Recursive Functions
 
 ## Operator Functions (Operator Overloading)
-
-### Extension Properties
 
 ## Inline Functions
 
