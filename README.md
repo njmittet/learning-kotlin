@@ -474,7 +474,43 @@ val Order.commaDelimitedItemNames: String
     get() = items.joinToString { it.name }
 ```
 
-## Higher Order Functions
+## Higher-Order Functions
+
+A higher-order function is a function that takes another function as parameter and/or returns a function.
+
+Taking a function (lambda) as a parameter:
+
+```kt
+// A function that returns the integer returned by the provided function.
+fun calculate(x: Int, y: Int, operation: (Int, Int) -> Int): Int {
+    return operation(x, y)
+}
+
+// Declaring a function that sums two integers.
+fun sum(x: Int, y: Int) = x + y   
+
+// Calling the higher-order  function with sum as operation, references by name
+val sumResult = calculate(4, 5, ::sum)
+
+// Calling the higher-order r function with a lambda as the operation.
+val multiplicationResult = calculate(4, 5) { a, b -> a * b }
+```
+
+Returning a function:
+
+```kt
+// Declares a higher-order function that returns a function. (Int) -> Int represents the parameters and return type of returned function.
+fun createOperation(): (Int) -> Int {
+    return ::square
+    // Or the lambda equivalent.
+    // return { x: Int -> square(x) }
+}
+
+fun square(x: Int) = x * x
+
+val operation = createOperation()
+val result = operation(4)
+```
 
 ## Lambda Functions
 
