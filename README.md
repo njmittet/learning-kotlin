@@ -476,7 +476,7 @@ val Order.commaDelimitedItemNames: String
 
 ## Higher-Order Functions
 
-A higher-order function is a function that takes another function as parameter and/or returns a function.
+Kotlin functions are first-class, which means they can be stored in variables and data structures, and can be passed as arguments to and returned from other higher-order functions. A higher-order function is a function that takes functions as parameters, or returns a function.
 
 Taking a function (lambda) as a parameter:
 
@@ -514,13 +514,35 @@ val result = operation(4)
 
 ## Lambda Functions
 
-### Tail Recursive Functions
+Lambda expressions and anonymous functions are function literals. Function literals are functions that are not declared but are passed immediately as an expression.
 
-## Operator Functions (Operator Overloading)
+Lambda expression is always surrounded by curly braces and the last expression inside the lambda body is treated as the return value.
+
+```kt
+// The full syntactic form, with all explicit types, of a lambda expression.
+val sum: (Int, Int) -> Int = { x: Int, y: Int -> x + y }
+
+// However, lambdas can be denoted very concisely in many cases thanks to type inference and the implicit "it" variable.
+val upperCase: (String) -> String = { it.uppercase() }
+
+// Function pointers can be used it the lambda consists of a single function call.
+val upperCase6: (String) -> String = String::uppercase
+
+// If the last parameter of a function is a function, then a lambda expression can be placed outside 
+// the parentheses, also known as  a trailing lambda.
+val sum = listOf(1, 2, 3).fold(1) { acc, e -> acc * e }
+
+// If the lambda is the only argument in that call, the parentheses can be omitted entirely.
+listOf("first,", "second").forEach { println(it.name.uppercase())
+```
 
 ## Inline Functions
 
+## Operator Functions (Operator Overloading)
+
 ### Non-local Return
+
+### Tail Recursive Functions
 
 ### Reification
 
