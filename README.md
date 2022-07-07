@@ -538,9 +538,53 @@ listOf("first,", "second").forEach { println(it.name.uppercase())
 
 ## Inline Functions
 
+Using higher-order functions imposes a runtime penalty since each function is an object, and it captures a closure. A closure is a scope of variables that can be accessed in the body of the function. Memory allocations and virtual calls causes theruntime overhead. In many cases this kind of overhead can be eliminated by inlining the lambda expressions.
+
+```kt
+fun <T> withLock(lock: Lock, operation: () -> T): T {
+    lock.lock()
+    val result = operation()
+    lock.unlock()
+    return result
+}
+
+val result = withLock(ReentrantLock()) {"Locked".uppercase()}
+}
+```
+
+Consider the above example: instead of creating a function object for the parameter and generating a call, the compiler could emit the following code:
+
+```kt
+lock.lock()
+return try {
+    operation()
+} finally {
+    lock.unlock()
+}
+```
+
+To make the compiler do this, mark the lock() function with the `inline` modifier:
+
+```kt
+inline fun <T> withLock(lock: Lock, operation: () -> T): T {
+    lock.lock()
+    val result = operation()
+    lock.unlock()
+    return result
+}
+
+val result = withLock(ReentrantLock()) {"Locked".uppercase()}
+}
+```
+
+The inline modifier affects both the inlined function and the lambdas passed to it: all of those will be inlined. To avoid all lambdas passed to an inline function to be inlined, mark some of your function parameters with the `noinline` modifier.
+
+Inlining will pay off in performance, especially inside loops, but it might cause the generated code to grow.
+
+### Returns (Jumps)
+
 ## Operator Functions (Operator Overloading)
 
-### Non-local Return
 
 ### Tail Recursive Functions
 
