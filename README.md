@@ -585,6 +585,41 @@ Inlining will pay off in performance, especially inside loops, but it might caus
 
 ## Operator Functions (Operator Overloading)
 
+See the [complete list of operator symbols](https://kotlinlang.org/docs/operator-overloading.html#in-operator).
+
+Kotlin allows custom implementations for predefined set of operators on types:
+
+```kt
+// This infix function can be converted to an operator function by replacing infix with operator.
+infix fun Int.times(string: String) = string.repeat(this)
+println(2 times "Bye ")
+
+// The corresponsing operator function. Since the operator symbol for times() is * the function call can be changed to.
+operator fun Int.times(str: String) = str.repeat(this)
+println(2 * "Bye ")
+```
+
+The `Collection` class provides the operator function `plus()`, which can be used to join two lists.
+
+```kt
+val firstList = listOf("One", "Two")
+val secondList = listOf("Three")
+
+// Using the plus method directly.
+
+val plusResult = firstList.plus(secondList)
+
+// Using the operator overloaded method.
+val operatorResult = firstList + secondList
+```
+
+The `get` operator symbol allows bracket access:
+
+```kt
+operator fun String.get(range: IntRange) = substring(range)
+val str = "A very long string"
+println(str[0..5])
+```
 
 ### Tail Recursive Functions
 
@@ -706,6 +741,10 @@ val person = Person()
     }
 ```
 
+## Delegation
+
+## Colletions
+
 ## Interfaces
 
 ## Classes
@@ -726,17 +765,11 @@ val person = Person()
 
 ### Companion Objects
 
-### Delegation
-
 ## Control Flow
 
 ### Comparison
 
 ## Stream Operations
-
-### Jumps
-
-### Labels
 
 ### When
 
