@@ -466,6 +466,14 @@ fun <T> T?.nullSafeToString() = this?.toString() ?: "NULL"
 
 ### Extension Properties
 
+It is also possible to add extensions properties to classes:
+
+```kt
+val Order.commaDelimitedItemNames: String
+    // A custom getter for the extension property.
+    get() = items.joinToString { it.name }
+```
+
 ## Higher Order Functions
 
 ## Lambda Functions
