@@ -613,6 +613,85 @@ loop@ for (i in 1..10) {
     }
 }
 
+### Non-local Returns
+
+Functions can be nested using function literals, local functions, and object expressions. An unqualified return can be used to exit a named or anonymous function. Qualified (labeled) returns allow us to return from an outer, enclosing, function. The most common use case is returning from a lambdas. Such returns are called `non-local returns`:
+
+```kt
+fun foo() {
+    // Calling a function that takes a lambda as a singel argument.
+    bar {
+        // Will cause an error, since the lambda cannot make foo() return.
+        return 
+    }
+}
+```
+
+The exception is when `bar()` is `inlined`. The lambda and the returne is also inlined, and the return works as expected:
+
+```kt
+fun foo() {
+    // Calling a function that takes a lambda as a singel argument.
+    inline bar {
+        return
+    }
+}
+```
+
+Loop constructs often uses inlined functions functions:
+
+```kt
+fun foo() {
+    listOf(1, 2, 3, 4, 5).forEach {
+        // Returns to the nearest enclosing function since forEach is inlined.
+        if (it == 3) return
+        println(it)
+    }
+    println("Unreachable")
+}
+```
+
+To return from non-inline lambda expression, label it and qualify the return:
+
+```kt
+fun foo() {
+    listOf(1, 2, 3, 4, 5).forEach label@{
+        // A local return to the caller of the lambda, the forEach loop, which makes the foreach continue.
+        if (it == 3) return@label
+        println(it)
+    }
+    println("Done")
+}
+```
+
+Often it is more convenient to use implicit labels, which are named the same names as the function calling the lambda:
+
+```kt
+fun foo() {
+    listOf(1, 2, 3, 4, 5).forEach {
+        // A local return to the caller of the lambda, the forEach loop, which makes the foreach continue.
+        if (it == 3) return@forEach
+        println(it)
+    }
+    println("Done")
+}
+```
+
+The use of local returns in the two above examples is similar to using `continue` in regular loops.
+
+// An alterative way to enfore a local return is to use a anonymous function instead of a lambda, since they will return from the anonymous function itself.
+
+```kt
+fun foo() {
+    listOf(1, 2, 3, 4, 5).forEach(fun(value: Int) {
+        // A local return to the caller of the lambda, the forEach loop, which makes the foreach continue.
+        if (value == 3) return
+        println(value)
+    })
+    println("Done")
+}
+```
+
 ## Operator Functions (Operator Overloading)
 
 See the [complete list of operator symbols](https://kotlinlang.org/docs/operator-overloading.html#in-operator).
