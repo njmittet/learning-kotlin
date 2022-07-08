@@ -581,7 +581,37 @@ The inline modifier affects both the inlined function and the lambdas passed to 
 
 Inlining will pay off in performance, especially inside loops, but it might cause the generated code to grow.
 
-### Returns (Jumps)
+### Returns and Jumps (Labels)
+
+Kotlin has three structural jump expressions:
+
+1. `return` by default returns from the *nearest enclosing function* (or anonymous function).
+2. `break` terminates the *nearest enclosing loop*.
+3. `continue` proceeds to the next step of the *nearest enclosing loop*.
+
+Any expression may be marked with a label, such as `abc@`. The label can be used to qualify a `break`, `continue` or `return`.
+
+A qualified `break` exits the labeled loop:
+
+```kt
+loop@ for (i in 1..10) {
+    for (j in 1..10) {
+        // Terminates the outer loop.
+        if (j == 5) break@loop
+        println("$i:$j")
+    }
+}
+```
+
+A `continue` jumps to the next iteration of the labeled loop.
+
+loop@ for (i in 1..10) {
+    for (j in 1..10) {
+        // Continues on the next outer loop iteration.
+        if (j == 5) continue@loop
+        println("$i:$j")
+    }
+}
 
 ## Operator Functions (Operator Overloading)
 
