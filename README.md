@@ -732,6 +732,34 @@ println(str[0..5])
 
 ### Tail Recursive Functions
 
+For some algorithms that would normally use loops, a recursive function can be used instead. If the function is marked with the `tailrec modifier` and meets the required conditions, the compiler can optimize the recursion back into an efficient loop. To be eligible for the `tailrec` modifier, the recursive function must call itself as the last operation it performs.
+
+```kt
+tailrec fun findFixPoint(x: Double = 1.0): Double {
+    val res = abs(x - cos(x))
+    return if (res < eps) {
+        x
+    } else {
+        // Recursive call
+        findFixPoint(cos(x))
+    }
+}
+```
+
+The non-recursive code emitted by the compiler:
+
+```kt
+fun findFixPoint(): Double {
+    var x = 1.0
+    while (true) {
+        if (abs(x - cos(x)) < eps) {
+            return x
+        }
+        x = cos(x)
+    }
+}
+```
+
 ### Reification
 
 ## Scope Functions
