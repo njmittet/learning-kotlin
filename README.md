@@ -581,6 +581,20 @@ The inline modifier affects both the inlined function and the lambdas passed to 
 
 Inlining will pay off in performance, especially inside loops, but it might cause the generated code to grow.
 
+It is also possible to inline properties (that don't have backing fields), or the properties accessors:
+
+```kt
+// Inline anb individual property accessor.
+var bar: Foo
+    get() = ...
+    inline set(v) { ... }
+
+// Inline the entire property, which marks both of its accessors as inline.
+inline var bar: Bar
+    get() = ...
+    set(v) { ... }    
+```
+
 ### Returns and Jumps (Labels)
 
 Kotlin has three structural jump expressions:
@@ -795,20 +809,6 @@ inline fun <reified T> TreeNode.findParentOfType(): T? {
 
 // The call to the reified inline function.
 treeNode.findParentOfType<MyTreeNode>()
-
-
-It is also possible to inline properties (that don't have backing fields), or the properties accessors:
-
-```kt
-// Inline anb individual property accessor.
-var bar: Foo
-    get() = ...
-    inline set(v) { ... }
-
-// Inline the entire property, which marks both of its accessors as inline.
-inline var bar: Bar
-    get() = ...
-    set(v) { ... }    
 ```
 
 ## Scope Functions
