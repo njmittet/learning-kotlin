@@ -762,6 +762,55 @@ fun findFixPoint(): Double {
 
 ### Reification
 
+// Kotlin and Java erase generic type information at compile time, so all possible forms of a generic type manifest themselves as one simple raw type at runtime, hence `List<Int>` and `List<String>` are both a `List` at runtime. If accessing the type in a generic function at runtime is required, reflection may be the only way:
+
+```kt
+// Extension function used to find a parent of a certain type.
+fun <T> TreeNode.findParentOfType(clazz: Class<T>): T? {
+    // parent is a property of TreeNode.
+    var p = parent
+    // Using reflection to check whether the node is of a certain type.
+    while (p != null && !clazz.isInstance(p)) {
+        p = p.parent
+    }
+    @Suppress("UNCHECKED_CAST")
+    return p as T?
+}
+
+// Function call.
+treeNode.findParentOfType(MyTreeNode::class.java)
+```
+
+The code above is more complex than necessary. A better solution would be to pass the type to the function. Inlining functions allows `reifying` the generic type information at runtime, which is possible since the Kotlin compiler will replace the body of inlined functions for each call site and already knows about the call site context and the type information.
+
+```kt
+inline fun <reified T> TreeNode.findParentOfType(): T? {
+    var p = parent
+    // Comparing the type instead of using reflection.
+    while (p != null && p !is T) {
+        p = p.parent
+    }
+    return p as T?
+}
+
+// The call to the reified inline function.
+treeNode.findParentOfType<MyTreeNode>()
+
+
+It is also possible to inline properties (that don't have backing fields), or the properties accessors:
+
+```kt
+// Inline anb individual property accessor.
+var bar: Foo
+    get() = ...
+    inline set(v) { ... }
+
+// Inline the entire property, which marks both of its accessors as inline.
+inline var bar: Bar
+    get() = ...
+    set(v) { ... }    
+```
+
 ## Scope Functions
 
 The Kotlin standard library contains several functions whose purpose is to execute a block of code within the context of an object. When such a function is called on an object with a lambda expression provided, it forms a temporary scope. Within this scope, the object can access without its name. These functions do the same: execute a block of code on an object. Chosing the right one for your case can be a bit tricky, but difference between them is how the object is accessed inside the block and what the return value is. Scope functions do not introduce any new technical capabilities, but they can make code readable.
