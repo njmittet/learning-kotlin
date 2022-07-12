@@ -34,11 +34,11 @@ class A {
             // B's this
             val b = this@B
             // foo()'s receiver, an Int
-            val c = this 
+            val c = this
 
             val myFunction = lambda@ fun String.() {
                 // myFunction's receiver, a String
-                val d = this 
+                val d = this
             }
 
             val myLambda = { s: String ->
@@ -47,7 +47,7 @@ class A {
             }
         }
     }
-}            
+}
 ```
 
 When calling a member function, `this` can be skipped, unless there exists a non-member function with the same name.
@@ -58,7 +58,7 @@ fun printLine() { }
 class A {
     fun printLine() { }
 
-    fun invokePrintLine()  { 
+    fun invokePrintLine() {
         // Calls outer function
         printLine()
         // Calls member function
@@ -75,7 +75,7 @@ String templates allows inclusion of variable references and expressions into st
 val name = "Name"
 
 // Variable reference
-println("Hello $name")  
+println("Hello $name")
 // Expressions enclosed in curly braces
 println("Hello ${name.toUpperCase()}")
 ```
@@ -100,15 +100,15 @@ Anything can be on the right-hand side of a destructuring declaration, as long a
 Array:
 
 ```kt
-val (x, y, z) = arrayOf(5, 10, 15) 
+val (x, y, z) = arrayOf(5, 10, 15)
 ```
 
 maps, note thte useage of `ifiox` funsion `to` returning the built-in `Pair`
 
 ```kt
 val map = mapOf("Alice" to 21, "Bob" to 25)
-for ((name, age) in map) {                                      
-    println("$name is $age years old")          
+for ((name, age) in map) {
+    println("$name is $age years old")
 }
 
 The built-in `Pair` and `Triple` types support destructuring too, even as return values from functions:
@@ -154,7 +154,7 @@ Unlike Pair, no `inline infix` function for creating a Tripple exists.
 ```kt
 val triple = Triple("John", 20, true)
 
-// Destructuring a tripple 
+// Destructuring a tripple
 val (name, age, isMediumMember) = triple
 ```
 
@@ -414,7 +414,7 @@ A member function is a function that is defined inside a class or object:
 ```kt
 class MyClass {
 
-    fun foo() { 
+    fun foo() {
         // ...
     }
 }
@@ -487,7 +487,7 @@ fun calculate(x: Int, y: Int, operation: (Int, Int) -> Int): Int {
 }
 
 // Declaring a function that sums two integers.
-fun sum(x: Int, y: Int) = x + y   
+fun sum(x: Int, y: Int) = x + y
 
 // Calling the higher-order  function with sum as operation, references by name
 val sumResult = calculate(4, 5, ::sum)
@@ -592,7 +592,7 @@ var bar: Foo
 // Inline the entire property, which marks both of its accessors as inline.
 inline var bar: Bar
     get() = ...
-    set(v) { ... }    
+    set(v) { ... }
 ```
 
 ### Returns and Jumps (Labels)
@@ -636,7 +636,7 @@ fun foo() {
     // Calling a function that takes a lambda as a singel argument.
     bar {
         // Will cause an error, since the lambda cannot make foo() return.
-        return 
+        return
     }
 }
 ```
@@ -665,7 +665,7 @@ fun foo() {
 }
 ```
 
-To return from non-inline lambda expression, label it and qualify the return:
+To return from not-inlined lambda expression, label it and qualify the return:
 
 ```kt
 fun foo() {
@@ -927,17 +927,13 @@ val person = Person()
     }
 ```
 
-## Delegation
-
-## Colletions
+### Properties
 
 ## Interfaces
 
 ## Classes
 
 ### Generics
-
-### Accessors
 
 ### Inheritance
 
@@ -947,15 +943,19 @@ val person = Person()
 
 ### Sealed Classes
 
+## Exceptions
+
 ## Objects
 
 ### Companion Objects
 
-## Control Flow
+## Colletions
 
-### Comparison
+## Delegation
 
 ## Stream Operations
+
+## Control Flow
 
 ### When
 
