@@ -489,7 +489,7 @@ fun calculate(x: Int, y: Int, operation: (Int, Int) -> Int): Int {
 // Declaring a function that sums two integers.
 fun sum(x: Int, y: Int) = x + y
 
-// Calling the higher-order  function with sum as operation, references by name
+// Calling the higher-order function with sum as operation, references by name
 val sumResult = calculate(4, 5, ::sum)
 
 // Calling the higher-order r function with a lambda as the operation.
@@ -529,7 +529,7 @@ val upperCase: (String) -> String = { it.uppercase() }
 val upperCase6: (String) -> String = String::uppercase
 
 // If the last parameter of a function is a function, then a lambda expression can be placed outside 
-// the parentheses, also known as  a trailing lambda.
+// the parentheses, also known as a trailing lambda.
 val sum = listOf(1, 2, 3).fold(1) { acc, e -> acc * e }
 
 // If the lambda is the only argument in that call, the parentheses can be omitted entirely.
@@ -652,12 +652,12 @@ fun foo() {
 }
 ```
 
-Loop constructs often uses inlined functions functions:
+Loop constructs often uses inlined functions:
 
 ```kt
 fun foo() {
     listOf(1, 2, 3, 4, 5).forEach {
-        // Returns to the nearest enclosing function since forEach is inlined.
+        // Returns to the nearest enclosing function, foo(), since forEach is inlined.
         if (it == 3) return
         println(it)
     }
@@ -927,11 +927,50 @@ val person = Person()
     }
 ```
 
-### Properties
+## Exceptions
 
-## Interfaces
+Exception classes in inherits the Throwable class. Every exception has a message, a stack trace, and an optional cause.
+
+`try` is an expression, which means it can have a return value:
+
+```kt
+val value = "1"
+
+val a = try {
+    value.toInt()
+} catch (e: NumberFormatException) {
+    null
+}
+```
+
+The contents of a finally block don't affect the result of the expression.
+
+Kotlin does not have checked exceptions, hence Kotlin functions do not declare the exceptions thrown.
+For interoperability with Java code, Kotlin code that throws checked exceptions can be annotated with `@Throws`:
+
+```kt
+@Throws(IOException::class)
+fun writeToFile() {
+    // ...
+    throw IOException()
+}
+```
+
+The throw expression has the type `Nothing`, which has no values and is used to mark code locations that can never be reached:
+
+```kt
+val name = person.name ?: throw IllegalArgumentException("Required")
+// The compiler knows the name is not initialized at this point.
+println(name)
+```
 
 ## Classes
+
+### Properties
+
+### Interfaces
+
+### Functional Interfaces
 
 ### Generics
 
@@ -943,15 +982,19 @@ val person = Person()
 
 ### Sealed Classes
 
-## Exceptions
+### Nested Classes
+
+### Inline Classes
+
+### Delegation
 
 ## Objects
 
+### Object Expressions
+
 ### Companion Objects
 
-## Colletions
-
-## Delegation
+## Collections
 
 ## Stream Operations
 
@@ -966,8 +1009,6 @@ val person = Person()
 ### Conditional Expressions
 
 ### Equality Checks
-
-## Collections
 
 ## Asynchronous Programming
 
@@ -1041,7 +1082,7 @@ class Person(
 ) : Human(id, name) {}
 ```
 
-Prefer using an expression body for functions with the body consisting of a single expression:
+Prefer using an expression body for functionswith the body consisting of a single expression:
 
 ```kt
 fun securityConfig() = mapOf(
