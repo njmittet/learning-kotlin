@@ -966,7 +966,215 @@ println(name)
 
 ## Classes
 
+A class declaration consists of the class name, the class header and the class body.
+Both the class header and the class body are optional.
+
+Classes can contain:
+
+- Constructors and initializer blocks
+- Functions
+- Properties
+- Nested and inner classes
+- Object declarations
+
+Curly braces can be omitted if the class has no body:
+
+```kt
+class Empty
+```
+
+A class in Kotlin can have a primary constructor and one or more secondary constructors. The primary constructor is a part of the class header:
+
+```kt
+class Person constructor(firstName: String) {}
+```
+
+The constructor keyword can be omitted if the primary constructor does not have any annotations or visibility modifiers:
+
+```kt
+class Person(firstName: String) {}
+```
+
+The primary constructor cannot contain any code, but initialization code can be placed in `initializer blocks` prefixed with the `init` keyword:
+
+```kt
+class InitOrderDemo(name: String) {
+    val firstProperty = "First property: $name".also(::println)
+
+    init {
+        println("First initializer block that prints $name")
+    }
+
+    val secondProperty = "Second property: ${name.length}".also(::println)
+
+    init {
+        println("Second initializer block that prints ${name.length}")
+    }
+}
+```
+
+During the initialization of an instance, the initializer blocks are executed in the same order as they appear in the class body.
+
+Primary constructor parameters can be used in both initializer blocks property initializers declared in the class body:
+
+```kt
+class Customer(name: String) {
+    init {
+        println("name: $name")
+    }
+
+    // The property is set before the initializer blocks are executed.
+    private val uppercaseName = name.uppercase()
+
+    init {
+        println("uppercaseName: $uppercaseName")
+    }
+}
+```
+
+If the constructor has annotations or visibility modifiers, the `constructor` keyword is required:
+
+```kt
+class Customer public @Inject constructor(name: String) {}
+```
+
+Classes can declare secondary constructors, which must always be prefixed with the `constructor` keyword:
+
+```kt
+class Graph(val nodes: MutableList<Node> = mutableListOf())
+// Class with no primary constructor.
+class Node {
+    // A single secondary constructor should be converted to a primary one.
+    constructor(graph: Graph) {
+        graph.nodes.add(this)
+    }
+}
+```
+
+If the class has a primary constructor, all secondary constructors must delegate to the primary constructor. The primary constructor may be empty.
+Delegation is done using the `this` keyword:
+
+```kt
+// Empty primary constructor.
+class Node() {
+    constructor(graph: Graph) : this() {
+        graph.nodes.add(this)
+    }
+}
+
+// Delegate to primary constructor with a value.
+class Node(val value: Int) {
+    constructor(value: Int, graph: Graph) : this(value) {
+        graph.nodes.add(this)
+    }
+}
+```
+
+Code in initializer blocks effectively becomes part of the primary constructor. Delegation to the primary constructor happens as the first statement of a secondary constructor, so the code in the initializer blocks are executed before the body of the secondary constructor. If a class has no primary constructor, delegation happens implicitly:
+
+```kt
+class Node {
+    // Called before the secondary constructor.
+    init {
+        println("Init")
+    }
+
+    constructor(i: Int) {
+        println("Constructor $i")
+    }
+}
+```
+
+If you don't want your class to have a public constructor, declare an empty primary constructor with non-default visibility:
+
+```kt
+class PrivateConstructor private constructor () {}
+```
+
 ### Properties
+
+Class properties can, in addition to being declared direclty in the constructor, be declared as `val` or `var` in the class body:
+
+```kt
+class Person {
+    var name: String = "Name"
+}
+
+val person = Person()
+// No constructor, so property must be overridden after class initialization.
+person.name = "Overridden"
+```
+
+Properties has implicit getters and setters. Custom getters must have the same visibility as their properties, while custom setters can have lower visbility:
+
+```kt
+class Person(name: String) {
+    var name: String = name
+        get() = field.uppercase()
+        private set(value) {
+            field = value.trim()
+        }
+}
+```
+
+A field is only used as a part of a property to hold its value in memory and cannot be declared directly. When a property needs a backing field, Kotlin provides it automatically, if at least one of the accessors is used, or if a custom accessor references it through the `field` identifier. This allows defining custom logic within the `get()` and `set()` methods, e.g. to create computed properties:
+
+```kt
+class Person(
+    private val firstName: String,
+    private val lastName: String,
+) {
+    val name get() = this.firstName + " " + this.lastName
+}
+```
+
+`lateinit` can be used on `var` properties declared inside the body of a class to tell the compiler that non-null type properties will be initialized, but not in the constructor. E.g. properties can be initialized through dependency injection, or in the setup method of a unit test:
+
+```kt
+public class MyTest {
+
+    @Inject
+    lateinit var subject: TestSubject
+}
+```
+
+### Visibility
+
+Classes, objects, interfaces, constructors, and functions, as well as properties and their setters, can have the following visibility modifiers:
+
+1. `private`
+2. `protected`
+3. `internal`
+4. `public`
+
+`public` is default.
+
+Functions, properties, classes, objects, and interfaces can be declared directly inside a package:
+
+1. `private`: Visible inside the file that contains the declaration.
+2. `internal`: Visible everywhere in the same module.
+3. `protected`: Not available for package declarations.
+
+```kt
+// Top-level property declared in a file. visible everywhere
+public var bar: Int = 5 
+    // Making the setter visible only in the file where the property is declared.
+    private set
+```
+
+For classes, the following applies:
+
+1. `private`:  Visible only inside this class.
+2. `protected`: Also visible in subclasses.
+3. `internal`: Visible to any client class, inside the same module, of the declaring class.
+4. `public`: Visible to any client class of the declaring class.
+
+A module is a set of Kotlin files compiled together:
+
+1. An IntelliJ IDEA module.
+2. A Maven project.
+3. A Gradle source set.
+4. A set of files compiled with one invocation of the `kotlinc` Ant task.
 
 ### Interfaces
 
