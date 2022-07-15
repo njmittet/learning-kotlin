@@ -1178,6 +1178,78 @@ A module is a set of Kotlin files compiled together:
 
 ### Interfaces
 
+Interfaces can contain abstract methods and method implementations. The different from abstract classes is that interfaces cannot store state:
+
+```kt
+interface Interface {
+
+    // Abstract function that must be implemented by the implementing class.
+    fun bar()
+
+    // Function with implementation.
+    fun foo() {
+    }
+}
+```
+
+Properties must be abstract or provide accessor implementations:
+
+```kt
+interface Interface {
+
+    // Property that must be overridden.
+    val property: Int
+
+    // Returns a default value since properties declared in interfaces can not have backing fields.
+    val propertyWithAccessor: String
+        get() = "foo"
+
+    // Causes an error since the backing field is references but does not exist.
+    val propertyWithBackingField: String
+        get() = field.uppercase()
+}
+```
+
+Overriding in the implementing class would look like:
+
+```kt
+// Implement interface property as constructor parameter.
+class Child(override val property: Int) : Interface {
+
+    // Override interface method.
+    override fun bar() {
+        // Calling the interface method with an existing implementation.
+        foo()
+    }
+
+    // Override interface property in class body.
+    override val value: Int = 2
+}
+```
+
+Interfaces can derive from other interfaces, meaning it can both provide implementations for the inherited members and declare new functions and properties:
+
+```kt
+interface Named {
+    val name: String
+}
+
+interface Person : Named {
+    val firstName: String
+    val lastName: String
+
+    // Implements the abstract property by creating a computed property.
+    override val name: String
+        get() = "$firstName $lastName"
+}
+
+data class Employee(
+    override val firstName: String,
+    override val lastName: String,
+    val position: Position
+) : Person
+```
+
 ### Functional Interfaces
 
 ### Generics
