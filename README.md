@@ -525,8 +525,8 @@ val sum: (Int, Int) -> Int = { x: Int, y: Int -> x + y }
 // However, lambdas can be denoted very concisely in many cases thanks to type inference and the implicit "it" variable.
 val upperCase: (String) -> String = { it.uppercase() }
 
-// Function pointers can be used it the lambda consists of a single function call.
-val upperCase6: (String) -> String = String::uppercase
+// Function pointers can be used if the lambda consists of a single function call.
+val upperCase: (String) -> String = String::uppercase
 
 // If the last parameter of a function is a function, then a lambda expression can be placed outside 
 // the parentheses, also known as a trailing lambda.
@@ -1251,6 +1251,62 @@ data class Employee(
 ```
 
 ### Functional Interfaces
+
+Interfaces with only one abstract method is called a functional interface, which can have several non-abstract members but only one abstract member:
+
+```kt
+// The fun keyword in front of the interface marks the interface as a functional interface.
+fun interface IntPredicate {
+   fun accept(i: Int): Boolean
+}
+```
+
+Kotlin can perform what is called `SAM conversion` which makes is possible to call the single abstact method with a lambda instead of having to implement and instantiating the interface.
+
+```kt
+fun interface IntPredicate {
+   fun accept(i: Int): Boolean
+}
+
+val isEven = IntPredicate { it % 2 == 0 }
+
+fun main() {
+   println("Number is even: ${isEven.accept(7)}")
+}
+```
+
+Without the SAM conversion, the abstract methods would have to be implemented:
+
+```kt
+val isEven = object : IntPredicate {
+   override fun accept(i: Int): Boolean {
+       return i % 2 == 0
+   }
+}
+```
+
+The above example could also be written with just a lambda function:
+
+```kt
+val isEven: (Int) -> Boolean = { it % 2 == 0 }
+isEven(7)
+```
+
+The difference becomes clearer when we call functions that expectes a functional interface, which often is the case when calling Java code from Kotlin:
+
+```kt
+// The functional interface declaration.
+fun interface IntOperation {
+    fun apply(x : Int, y : Int): Int
+}
+
+// A function that expects a functional interface.
+fun runCalculator(operation: IntOperation) {
+    val result = operation.apply(2, 4)
+}
+
+runCalculator {x, y -> x * y}
+```
 
 ### Generics
 
