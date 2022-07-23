@@ -1250,6 +1250,62 @@ data class Employee(
 ) : Person
 ```
 
+### Type Aliases
+
+Type aliases provide alternative names for existing types, and does not intrduce new types. Type aliases are useful when shortening generic types, as aliases for function types and for naming inner and nested classes:
+
+```kt
+typealias PersonList = List<Person>
+val personList = PersonList()
+```
+
+A typ ealias used to shorten a genertic type:
+
+```kt
+typealias PersonCategoryMap<T> = HashMap<T, List<Person>>
+
+val personCategoriesMap = PersonCategoryMap<String>()
+
+personCategoriesMap["Leader"] = listOf(
+    Person("Person 1"),
+    Person("Person 2"),
+)
+```
+
+Using the same type alias as return type from a function:
+
+```kt
+fun <T> returnTypeAlias(key: T, persons: List<Person>): PersonCategoryMap<T> {
+    return PersonCategoryMap<T>().also { it[key] = persons }
+}
+```
+
+Aliasing nested classes:
+
+```kt
+class Invoice {
+    inner class Field
+}
+
+typealias InvoiceField = Invoice.Field
+```
+
+Aliasing a function type:
+
+```kt
+typealias BiggestNumber<T> = (T, T) -> Int
+
+fun <T> getBiggest(a:  T, b: T, biggestNumber: BiggestNumber<T>): Int {
+    return biggestNumber(a, b)
+}
+```
+
+Kotlin itself uses type alias extensively to wrap Java types:
+
+```kt
+public typealias Comparator<T> = java.util.Comparator<T>
+```
+
 ### Functional Interfaces
 
 Interfaces with only one abstract method is called a functional interface, which can have several non-abstract members but only one abstract member:
@@ -1308,9 +1364,9 @@ fun runCalculator(operation: IntOperation) {
 runCalculator {x, y -> x * y}
 ```
 
-### Generics
-
 ### Inheritance
+
+### Generics
 
 ### Data Classes
 
