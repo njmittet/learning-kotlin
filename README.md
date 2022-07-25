@@ -1331,7 +1331,7 @@ fun main() {
 }
 ```
 
-Without the SAM conversion, the abstract methods would have to be implemented:
+Without the SAM conversion, the abstract methods would have to be implemented and instantiated:
 
 ```kt
 val isEven = object : IntPredicate {
@@ -1341,14 +1341,14 @@ val isEven = object : IntPredicate {
 }
 ```
 
-The above example could also be written with just a lambda function:
+The above example could also be written as a function type:
 
 ```kt
 val isEven: (Int) -> Boolean = { it % 2 == 0 }
 isEven(7)
 ```
 
-The difference becomes clearer when we call functions that expectes a functional interface, which often is the case when calling Java code from Kotlin:
+The difference becomes clearer when we call functions that expects a functional interface, which often is the case when calling Java code from Kotlin:
 
 ```kt
 // The functional interface declaration.
@@ -1363,6 +1363,23 @@ fun runCalculator(operation: IntOperation) {
 
 runCalculator {x, y -> x * y}
 ```
+
+The above examples could also be written using a type alias, which basically is the same as using a plain function type without the type alias:
+
+```kt
+typealias IntPredicate = (Int) -> Boolean
+val isEven: IntPredicate = { it % 2 == 0 }
+isEven(7)
+```
+
+But, functional interfaces and type aliases serve different purposes:
+
+- Type aliases don't create a new type, while functional interfaces do.
+- Functional interfaces can be applied extensions.
+- Type aliases can have only one member, while functional interfaces can have multiple non-abstract members and one abstract member.
+- Functional interfaces can also implement and extend other interfaces.
+
+Functional interfaces are more flexible and provide more capabilities than type aliases, but they are more complex syntactically and will result in a slight runtime overhead. Which one to choose depends on the complexity of the API where they are used.
 
 ### Inheritance
 
