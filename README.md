@@ -1489,6 +1489,80 @@ class Polygon : Shape {
 
 ### Generics
 
+Generic classes and functions increase code reusability by encapsulating common logic that is independent of a particular generic type.
+
+```kt
+class Box<T>(param: T) {
+    var value = param
+}
+
+// Provide the type arguments when instantiating. The right side type argument is unnecessary, but allowed.
+val box: Box<Int> = Box<Int>(1)
+
+// If the type arguments can be inferred by the compiler, both type arguments can be omitted.
+val box = Box(1)
+```
+
+Kotlin does not have Javas wildcard system for generics. Instead, Kotlin has declaration-site variance and type projections:
+
+```kt
+```
+
+Generic types in Java are invariant, meaning that `List<String>` is not a subtype of `List<Object>`, which prevents:
+
+```java
+List<String> strings = new ArrayList<String>();
+List<Object> objects = strings;
+```
+
+The same mechanism would prevent the allowed:
+
+```java
+void copyAll(Collection<Object> to, Collection<String> from) {
+    to.addAll(from);
+}
+```
+
+To mitigate this, Java uses wildcards:
+
+```java
+ interface Collection<E> {
+    // The wildcard type argument ? extends E indicates that this method accepts a collection of objects of E or a subtype of E.
+    void addAll(Collection<? extends E> items);
+}
+```
+
+See [Generics: in, out, where](https://kotlinlang.org/docs/generics.html#variance) for a thorough explanation of the complexity of Java generics.
+
+Kotlin uses `declaration-site variance` to mitigate the complexity. Annotate a type parameter T with the `out` modifier to make sure it is only returned and never consumed:
+
+```kt
+// Declaration-site variance, in contrast with Java's use-site variance.
+interface Source<out T> {
+    fun next(): T
+}
+
+fun demo(strings: Source<String>) {
+    // Allowed since T is an out-parameter.
+    val objects: Source<Any> = strings
+}
+```
+
+In addition to `out`, Kotlin provides a complementary variance annotation `in`, meaning it can only be consumed and never produced:
+
+```kt
+interface Comparable<in T> {
+    operator fun compareTo(other: T): Int
+}
+
+fun demo(x: Comparable<Number>) {
+    // 1.0 has type Double, which is a subtype of Number.
+    x.compareTo(1.0)
+    // Assign x to a variable of type Comparable<Double> is also allowed.
+    val y: Comparable<Double> = x
+}
+```
+
 ### Data Classes
 
 ### Enums
