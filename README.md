@@ -717,7 +717,7 @@ Kotlin allows custom implementations for predefined set of operators on types:
 infix fun Int.times(string: String) = string.repeat(this)
 println(2 times "Bye ")
 
-// The corresponsing operator function. Since the operator symbol for times() is * the function call can be changed to.
+// The corresponding operator function. Since the operator symbol for times() is * the function call can be changed to.
 operator fun Int.times(str: String) = str.repeat(this)
 println(2 * "Bye ")
 ```
@@ -743,6 +743,8 @@ operator fun String.get(range: IntRange) = substring(range)
 val str = "A very long string"
 println(str[0..5])
 ```
+
+See [Kotlin operator overloading](https://kotlinlang.org/docs/operator-overloading.html#unary-operations) for a complete list of operator functions.
 
 ### Tail Recursive Functions
 
