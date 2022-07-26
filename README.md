@@ -1348,7 +1348,7 @@ val isEven: (Int) -> Boolean = { it % 2 == 0 }
 isEven(7)
 ```
 
-The difference becomes clearer when we call functions that expects a functional interface, which often is the case when calling Java code from Kotlin:
+The difference becomes clearer when calling functions that expects a functional interface, which often is the case when calling Java code from Kotlin:
 
 ```kt
 // The functional interface declaration.
@@ -1382,6 +1382,108 @@ But, functional interfaces and type aliases serve different purposes:
 Functional interfaces are more flexible and provide more capabilities than type aliases, but they are more complex syntactically and will result in a slight runtime overhead. Which one to choose depends on the complexity of the API where they are used.
 
 ### Inheritance
+
+Kotlin fully supports the object-oriented inheritance mechanism:
+
+```kt
+// Kotlin classes are final by default, but the class can be marked with the "open" modifier to allow inheritance.
+open class Shape {
+    // Kotlin methods are also final by default and must be marked with open to allow overriding.
+    open fun describe() {
+        println("Shape")
+    }
+}
+
+// The empty parentheses marks the invocation of the default constructor of the superclass:
+class Circle : Shape() {
+    // Overriding methods or attributes requires the "override" modifier.
+    // An overriding method is itself open so it can be overridden, but kan be marked with "final" to prohibit overriding.
+    final override fun describe() {
+        println("Circle")
+    }
+}
+```
+
+Calling a super class with a parameterized constructor:
+
+```kt
+open class Shape(private val type: String) {
+
+    fun describe() {
+        println("Type: $type")
+    }
+}
+
+class Circle : Shape("Circle")
+
+val shape: Shape = Circle()
+```
+
+Passing constructor arguments to superclasses:
+
+```kt
+open class Shape(val type: String, val color: String) {
+
+    fun describe() {
+        println("Type: $type, Color: $color")
+    }
+}
+
+class Circle(type: String) : Shape(type = type, color = "Red")
+
+val shape: Shape = Circle("Circle")
+```
+
+During instantiation of a derived class, the base class initialization is done before the initialization logic of the derived class. When the base class constructor is executed, the properties declared or overridden in the derived class are not yet initialized, so peroperties of the derived class should not be used by the base class initialization logic. When designing a base class, avoid using open members in the constructors, property initializers, or init blocks.
+
+If a derived class has no primary constructor, then all secondary constructors has to initialize the base type using the `super` keyword or it has to delegate to another constructor which does:
+
+```kt
+class Circle : Shape {
+    constructor(type: String) : super(type)
+    constructor(type: String, color: String) : super(type, color)
+}
+```
+
+Kotlin support multiple inheritance. Is a class inherits multiple implementations of the same member from its superclasses, it must its own implementation:
+
+```kt
+interface Shape {
+    // Interface members are open by default.
+    fun draw() {}
+}
+
+open class Rectangle {
+    open fun draw() {}
+}
+
+class Square() : Shape, Rectangle() {
+    // The compiler requires draw() to be overridden:
+    override fun draw() {
+        // Use "super" qualified by the supertype name in angle brackets to denote a specific supertype.
+        super<Shape>.draw()
+        super<Rectangle>.draw()
+    }
+}
+```
+
+The overriding mechanism works on properties in the same way that it does on methods:
+
+```kt
+interface Shape {
+    val vertexCount: Int
+}
+
+// Using the override keyword as part of the property declaration in a primary constructor.
+class Rectangle(override val vertexCount: Int = 4) : Shape
+
+// A "var" property can override a "val" property, but not the other way around. 
+// This is allowed because a val property declares a get() method, and overriding
+// it as a var additionally declares a set() method.
+class Polygon : Shape {
+    override var vertexCount: Int = 0
+}
+```
 
 ### Generics
 
