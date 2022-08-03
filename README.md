@@ -474,11 +474,52 @@ val Order.commaDelimitedItemNames: String
     get() = items.joinToString { it.name }
 ```
 
+## Function Types
+
+Kotlin uses function types or declarations that deal with functions. The notation  corresponds to the signatures of the functions, the functions parameters and return values:
+
+```kt
+(Int) -> String
+```
+
+The function type notation can optionally include names for the function parameters:
+
+```kt
+(x: Int, y: Int) -> Point
+```
+
+Function types can optionally have an additional receiver type, which is specified before the dot in the notation:
+
+```kt
+// Represents functions that can be called on a receiver object A.
+A.(B) -> C
+```
+
+With `suspend` mdifier:
+
+```kt
+suspend () -> Unit
+```
+
+To specify that a function type is nullable, wrap the function type iun parentheses:
+
+```kt
+((Int, Int) -> Int)?
+```
+
+Combining function types:
+
+```kt
+(Int) -> ((Int) -> Unit)
+```
+
 ## Higher-Order Functions
 
-Kotlin functions are first-class, which means they can be stored in variables and data structures, and can be passed as arguments to and returned from other higher-order functions. A higher-order function is a function that takes functions as parameters, or returns a function.
+Kotlin functions are first-class, meaning they can be stored in variables and data structures, and can be passed as arguments to and returned from other higher-order functions. A higher-order function is a function that takes functions as parameters, or returns a function.
 
-Taking a function (lambda) as a parameter:
+https://kotlinlang.org/docs/lambdas.html#function-types
+
+Taking a function type as a parameter:
 
 ```kt
 // A function that returns the integer returned by the provided function.
@@ -1564,6 +1605,56 @@ fun demo(x: Comparable<Number>) {
 ```
 
 ### Data Classes
+
+Data classes make it easy to create classes that are used to store values:
+
+```kt
+data class User(val name: String, val age: Int)
+
+// Default values enables a parameterless constructor.
+data class User(val name: String = "", val age: Int = 0)
+val user = User()
+```
+
+The compiler automatically derives `equals()/hashCode()`, `toString()`, `componentN` and `copy()`.
+
+`componentN()`  allows accessing the properties in their order of declaration:
+
+```kt
+val name = user.component1()
+```
+
+To ensure consistency and meaningful behavior, the following rules applies:
+
+- The primary constructor needs to have at least one parameter.
+- All primary constructor parameters need to be marked as `val` or `var`.
+- Data classes cannot be `abstract`, `open`, `sealed`, or `inner`.
+- Providing explicit implementations for `componentN()` and `copy()` is not allowed.
+- Data classes may extend other classes.
+
+The compiler only uses the properties defined inside the primary constructor for the automatically generated functions:
+
+```kt
+// Properties are be excluded from generated implementations if declared in the class body.
+data class Person(val name: String) {
+    // Persons with the same name will be considered equal, regardless of the age.
+    var age: Int = 0
+}
+```
+
+The `copy()` function allows creating a copy and at the same time altering a subset of the copied properties:
+
+```kt
+val user = User(name = "User", age = 1)
+val olderUser = user.copy(age = 2)
+```
+
+Data classes supports destructuring declarations:
+
+```kt
+val user = User("User", 35)
+val (name, age) = user
+```
 
 ### Enums
 
