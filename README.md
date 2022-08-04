@@ -1656,7 +1656,45 @@ val user = User("User", 35)
 val (name, age) = user
 ```
 
-### Enums
+### Enum Classes
+
+Enum classes models types that represent a finite set of distinct values:
+
+```kt
+enum class State {
+    IDLE, RUNNING, FINISHED
+}
+```
+
+With enums, the compiler can infer if a `when`-expression is exhaustive.
+
+Enums may contain properties and methods like other classes:
+
+```kt
+// Defines an enum class with a property.
+enum class Color(val rgb: Int) {
+    // Each value passes a value to the constructor (i.e. setting the property).
+    RED(0xFF0000),
+    GREEN(0x00FF00),
+    BLUE(0x0000FF),
+    YELLOW(0xFFFF00);
+
+    // Class members are separated from the constant definitions by a semicolon.
+    fun containsRed(): Boolean {
+        // Bitwise comparison (would return true for the non-primary color YELLOW since they share first bits).
+        return (this.rgb and 0xFF0000 != 0)
+    }
+}
+```
+
+Enum classes methods for listing the defined constants and getting cnstants by name:
+
+```kt
+// Throws an IllegalArgumentException if the values does not match any of the enum constants.
+val red = Color.valueOf("RED")
+// Returns Array<Color>
+val colors= Color.values()
+```
 
 ### Sealed Classes
 
