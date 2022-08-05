@@ -1698,6 +1698,27 @@ val colors= Color.values()
 
 ### Sealed Classes
 
+Sealed classes restricts inheritance, as it can only be subclassed from inside the package the sealed class is declared:
+
+```kt
+sealed class Mammal(val name: String)
+
+// The parameter "catName" is simply a parameter passed to the primary constructor, 
+// not a class property (that can be accessed in init-blocks).
+class Cat(name: String) : Mammal(name)
+class Human(name: String, val occupation: String) : Mammal(name)
+
+fun greetMammal(mammal: Mammal): String {
+    return when (mammal) {
+        // The compiler performs a smart cast.
+        is Human -> "${mammal.name}, ${mammal.occupation}"
+        is Cat -> "${mammal.name}"
+    }
+    // An else-case is not necessary since all possible subclasses of the sealed class are covered. 
+    // The else would be required with a non-sealed superclass.
+}
+```
+
 ### Nested Classes
 
 ### Inline Classes
