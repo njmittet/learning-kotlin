@@ -437,7 +437,7 @@ val intList = singletonList(1)
 val stringList = singletonList("String")
 ```
 
-## Extension Functions
+### Extension Functions
 
 Kotlin lets you add new functions to any class. Extension function look a lot like normal functions, but the type they extend must be specified:
 
@@ -472,168 +472,6 @@ It is also possible to add extensions properties to classes:
 val Order.commaDelimitedItemNames: String
     // A custom getter for the extension property.
     get() = items.joinToString { it.name }
-```
-
-## Function Types
-
-Kotlin uses function types or declarations that deal with functions. The notation  corresponds to the signatures of the functions, the functions parameters and return values:
-
-```kt
-(Int) -> String
-```
-
-The function type notation can optionally include names for the function parameters:
-
-```kt
-(x: Int, y: Int) -> Point
-```
-
-Function types can optionally have an additional receiver type, which is specified before the dot in the notation:
-
-```kt
-// Represents functions that can be called on a receiver object A.
-A.(B) -> C
-```
-
-With `suspend` mdifier:
-
-```kt
-suspend () -> Unit
-```
-
-To specify that a function type is nullable, wrap the function type iun parentheses:
-
-```kt
-((Int, Int) -> Int)?
-```
-
-Combining function types:
-
-```kt
-(Int) -> ((Int) -> Unit)
-```
-
-## Higher-Order Functions
-
-Kotlin functions are first-class, meaning they can be stored in variables and data structures, and can be passed as arguments to and returned from other higher-order functions. A higher-order function is a function that takes functions as parameters, or returns a function.
-
-https://kotlinlang.org/docs/lambdas.html#function-types
-
-Taking a function type as a parameter:
-
-```kt
-// A function that returns the integer returned by the provided function.
-fun calculate(x: Int, y: Int, operation: (Int, Int) -> Int): Int {
-    return operation(x, y)
-}
-
-// Declaring a function that sums two integers.
-fun sum(x: Int, y: Int) = x + y
-
-// Calling the higher-order function with sum as operation, references by name
-val sumResult = calculate(4, 5, ::sum)
-
-// Calling the higher-order r function with a lambda as the operation.
-val multiplicationResult = calculate(4, 5) { a, b -> a * b }
-```
-
-Returning a function:
-
-```kt
-// Declares a higher-order function that returns a function. (Int) -> Int represents the parameters and return type of returned function.
-fun createOperation(): (Int) -> Int {
-    return ::square
-    // Or the lambda equivalent.
-    // return { x: Int -> square(x) }
-}
-
-fun square(x: Int) = x * x
-
-val operation = createOperation()
-val result = operation(4)
-```
-
-## Lambda Functions
-
-Lambda expressions and anonymous functions are function literals. Function literals are functions that are not declared but are passed immediately as an expression.
-
-Lambda expression is always surrounded by curly braces and the last expression inside the lambda body is treated as the return value.
-
-```kt
-// The full syntactic form, with all explicit types, of a lambda expression.
-val sum: (Int, Int) -> Int = { x: Int, y: Int -> x + y }
-
-// However, lambdas can be denoted very concisely in many cases thanks to type inference and the implicit "it" variable.
-val upperCase: (String) -> String = { it.uppercase() }
-
-// Function pointers can be used if the lambda consists of a single function call.
-val upperCase: (String) -> String = String::uppercase
-
-// If the last parameter of a function is a function, then a lambda expression can be placed outside 
-// the parentheses, also known as a trailing lambda.
-val sum = listOf(1, 2, 3).fold(1) { acc, e -> acc * e }
-
-// If the lambda is the only argument in that call, the parentheses can be omitted entirely.
-listOf("first,", "second").forEach { println(it.name.uppercase())
-```
-
-## Inline Functions
-
-Using higher-order functions imposes a runtime penalty since each function is an object, and it captures a closure. A closure is a scope of variables that can be accessed in the body of the function. Memory allocations and virtual calls causes theruntime overhead. In many cases this kind of overhead can be eliminated by inlining the lambda expressions.
-
-```kt
-fun <T> withLock(lock: Lock, operation: () -> T): T {
-    lock.lock()
-    val result = operation()
-    lock.unlock()
-    return result
-}
-
-val result = withLock(ReentrantLock()) {"Locked".uppercase()}
-}
-```
-
-Consider the above example: instead of creating a function object for the parameter and generating a call, the compiler could emit the following code:
-
-```kt
-lock.lock()
-return try {
-    operation()
-} finally {
-    lock.unlock()
-}
-```
-
-To make the compiler do this, mark the lock() function with the `inline` modifier:
-
-```kt
-inline fun <T> withLock(lock: Lock, operation: () -> T): T {
-    lock.lock()
-    val result = operation()
-    lock.unlock()
-    return result
-}
-
-val result = withLock(ReentrantLock()) {"Locked".uppercase()}
-}
-```
-
-The inline modifier affects both the inlined function and the lambdas passed to it: all of those will be inlined. To avoid all lambdas passed to an inline function to be inlined, mark some of your function parameters with the `noinline` modifier.
-
-Inlining will pay off in performance, especially inside loops, but it might cause the generated code to grow.
-
-It is also possible to inline properties (that don't have backing fields), or the properties accessors:
-
-```kt
-// Inline anb individual property accessor.
-var bar: Foo
-    get() = ...
-    inline set(v) { ... }
-
-// Inline the entire property, which marks both of its accessors as inline.
-inline var bar: Bar
-    get() = ...
-    set(v) { ... }
 ```
 
 ### Returns and Jumps (Labels)
@@ -747,7 +585,7 @@ fun foo() {
 }
 ```
 
-## Operator Functions (Operator Overloading)
+### Operator Functions (Operator Overloading)
 
 See the [complete list of operator symbols](https://kotlinlang.org/docs/operator-overloading.html#in-operator).
 
@@ -1006,6 +844,64 @@ val name = person.name ?: throw IllegalArgumentException("Required")
 // The compiler knows the name is not initialized at this point.
 println(name)
 ```
+
+## Type Aliases
+
+Type aliases provide alternative names for existing types, and does not intrduce new types. Type aliases are useful when shortening generic types, as aliases for function types and for naming inner and nested classes:
+
+```kt
+typealias PersonList = List<Person>
+val personList = PersonList()
+```
+
+A type alias used to shorten a genertic type:
+
+```kt
+typealias PersonCategoryMap<T> = HashMap<T, List<Person>>
+
+val personCategoriesMap = PersonCategoryMap<String>()
+
+personCategoriesMap["Leader"] = listOf(
+    Person("Person 1"),
+    Person("Person 2"),
+)
+```
+
+Using the same type alias as return type from a function:
+
+```kt
+fun <T> returnTypeAlias(key: T, persons: List<Person>): PersonCategoryMap<T> {
+    return PersonCategoryMap<T>().also { it[key] = persons }
+}
+```
+
+Aliasing nested classes:
+
+```kt
+class Invoice {
+    inner class Field
+}
+
+typealias InvoiceField = Invoice.Field
+```
+
+Aliasing a function type:
+
+```kt
+typealias BiggestNumber<T> = (T, T) -> Int
+
+fun <T> getBiggest(a:  T, b: T, biggestNumber: BiggestNumber<T>): Int {
+    return biggestNumber(a, b)
+}
+```
+
+Kotlin itself uses type alias extensively to wrap Java types:
+
+```kt
+public typealias Comparator<T> = java.util.Comparator<T>
+```
+
+## Function Types
 
 ## Classes
 
@@ -1291,62 +1187,6 @@ data class Employee(
     override val lastName: String,
     val position: Position
 ) : Person
-```
-
-### Type Aliases
-
-Type aliases provide alternative names for existing types, and does not intrduce new types. Type aliases are useful when shortening generic types, as aliases for function types and for naming inner and nested classes:
-
-```kt
-typealias PersonList = List<Person>
-val personList = PersonList()
-```
-
-A typ ealias used to shorten a genertic type:
-
-```kt
-typealias PersonCategoryMap<T> = HashMap<T, List<Person>>
-
-val personCategoriesMap = PersonCategoryMap<String>()
-
-personCategoriesMap["Leader"] = listOf(
-    Person("Person 1"),
-    Person("Person 2"),
-)
-```
-
-Using the same type alias as return type from a function:
-
-```kt
-fun <T> returnTypeAlias(key: T, persons: List<Person>): PersonCategoryMap<T> {
-    return PersonCategoryMap<T>().also { it[key] = persons }
-}
-```
-
-Aliasing nested classes:
-
-```kt
-class Invoice {
-    inner class Field
-}
-
-typealias InvoiceField = Invoice.Field
-```
-
-Aliasing a function type:
-
-```kt
-typealias BiggestNumber<T> = (T, T) -> Int
-
-fun <T> getBiggest(a:  T, b: T, biggestNumber: BiggestNumber<T>): Int {
-    return biggestNumber(a, b)
-}
-```
-
-Kotlin itself uses type alias extensively to wrap Java types:
-
-```kt
-public typealias Comparator<T> = java.util.Comparator<T>
 ```
 
 ### Functional Interfaces
