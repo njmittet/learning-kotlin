@@ -954,7 +954,7 @@ class InitOrderDemo(name: String) {
 
 During the initialization of an instance, the initializer blocks are executed in the same order as they appear in the class body.
 
-Primary constructor parameters can be used in both initializer blocks property initializers declared in the class body:
+Primary constructor parameters can be used in both initializer blocks and property initializers declared in the class body:
 
 ```kt
 class Customer(name: String) {
