@@ -244,6 +244,7 @@ fun buildMyMap(): Map<String, String>? {
 
 ## Functions
 
+<<<<<<< HEAD
 Kotlin functions are declared using the `fun` keyword.
 
 A function returning a value must have an explicit return if the function body has more than a single expression:
@@ -261,6 +262,11 @@ An explicit return can be omitted if a function only has a single expression:
 fun multiply(x: Int, y: Int) = x * y
 
 
+||||||| parent of 1e35559 (WIP)
+=======
+Kotlin functions are `first-class`, which means they can be stored in variables, can be passed as arguments and can be returned from other functions.
+
+>>>>>>> 1e35559 (WIP)
 ### Unit & Nothing
 
 The `Unit` type is used to maintain Void interoperability with Java. By default, Java's `void` is mapped to Unit type in Kotlin:
@@ -438,6 +444,10 @@ val stringList = singletonList("String")
 ```
 
 ### Extension Functions
+## Lambda Functions
+A higher-order function is a function that takes functions as parameters and/or returns a function.
+
+## Lambda Functions
 
 Kotlin lets you add new functions to any class. Extension function look a lot like normal functions, but the type they extend must be specified:
 
